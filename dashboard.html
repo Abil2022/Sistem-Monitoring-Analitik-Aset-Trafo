@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analitik - PLN Monitoring</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h2>PLN Monitoring</h2>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    <a href="monitoring.html"><i class="fas fa-map"></i> Peta Monitoring</a>
+                    <a href="dashboard.html" class="active"><i class="fas fa-chart-bar"></i> Dashboard</a>
+                    <a href="data-management.html"><i class="fas fa-database"></i> Data</a>
+                    <a href="#" data-action="logout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Dashboard Analitik</h1>
+            <p>Analisis data dan performa sistem distribusi gardu trafo</p>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading">
+            <div class="spinner"></div>
+            <span style="margin-left: 10px;">Memuat data...</span>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="error-message" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Gagal Memuat Data</h3>
+            <p>Silakan refresh halaman atau coba lagi nanti.</p>
+            <button id="retryButton" style="margin-top: 15px; padding: 10px 20px; background: var(--pln-blue); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                <i class="fas fa-redo"></i> Coba Lagi
+            </button>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section" id="filterSection" style="display: none;">
+            <div class="filter-group">
+                <span class="filter-label">Filter ULP:</span>
+                <select id="ulpFilter" class="filter-select">
+                    <option value="all">Semua ULP</option>
+                </select>
+            </div>
+            <div class="filter-info" id="filterInfo">
+                Menampilkan data dari <strong>Semua ULP</strong>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="dashboard-grid" id="statsOverview" style="display: none;">
+            <div class="stat-card total">
+                <div class="stat-icon total">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="stat-value" id="totalGardu">-</div>
+                <div class="stat-label">Total Gardu</div>
+            </div>
+            <div class="stat-card normal" id="normalCard">
+                <div class="stat-icon normal">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-value" id="normalGardu">-</div>
+                <div class="stat-label">Gardu Normal</div>
+                <button class="action-btn" onclick="redirectToMonitoring('normal')">
+                    <i class="fas fa-external-link-alt"></i> Lihat di Peta
+                </button>
+            </div>
+            <div class="stat-card medium" id="mediumCard">
+                <div class="stat-icon medium">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="stat-value" id="mediumGardu">-</div>
+                <div class="stat-label">Beban Sedang</div>
+                <button class="action-btn" onclick="redirectToMonitoring('medium')">
+                    <i class="fas fa-external-link-alt"></i> Lihat di Peta
+                </button>
+            </div>
+            <div class="stat-card high" id="highCard">
+                <div class="stat-icon high">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div class="stat-value" id="highGardu">-</div>
+                <div class="stat-label">Beban Tinggi</div>
+                <button class="action-btn" onclick="redirectToMonitoring('high')">
+                    <i class="fas fa-external-link-alt"></i> Lihat di Peta
+                </button>
+            </div>
+            <div class="stat-card nodata" id="nodataCard">
+                <div class="stat-icon nodata">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="stat-value" id="nodataGardu">-</div>
+                <div class="stat-label">Tidak Ada Data</div>
+                <button class="action-btn" onclick="redirectToMonitoring('nodata')">
+                    <i class="fas fa-external-link-alt"></i> Lihat di Peta
+                </button>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section" id="chartsSection" style="display: none;">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>Distribusi Beban per ULP</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="ulpDistributionChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>Distribusi Status Beban</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="statusDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ULP Performance -->
+        <div class="ulp-performance" id="ulpPerformance" style="display: none;">
+            <h2>Performa per ULP</h2>
+            <div class="performance-grid" id="ulpPerformanceGrid">
+                <!-- ULP cards will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Alert Section -->
+        <div class="alert-section" id="alertSection" style="display: none;">
+            <h2>Peringatan Sistem</h2>
+            <div class="alert-list" id="alertList">
+                <!-- Alerts will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PLN Monitoring</h3>
+                    <a href="#">Tentang Kami</a>
+                    <a href="#">Kontak</a>
+                    <a href="#">Kebijakan Privasi</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Bantuan</h3>
+                    <a href="#">Pusat Bantuan</a>
+                    <a href="#">Dokumentasi</a>
+                    <a href="#">Dukungan Teknis</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Layanan</h3>
+                    <a href="#">Peta Monitoring</a>
+                    <a href="#">Laporan</a>
+                    <a href="#">API</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 PLN Monitoring System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

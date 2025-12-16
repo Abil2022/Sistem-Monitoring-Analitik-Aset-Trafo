@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Data Gardu - PLN UP3 LSM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/data-management.css">
+</head>
+<body>
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Operasi berhasil!</span>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h2>PLN Monitoring System</h2>
+                        <p style="font-size: 0.9rem; opacity: 0.9;">UP3 LSM</p>
+                    </div>
+                </div>
+                <div class="nav-links">
+                    <a href="index_halaman.html"><i class="fas fa-home"></i> Beranda</a>
+                    <a href="monitoring.html"><i class="fas fa-map"></i> Peta Monitoring</a>
+                    <a href="Dashboard_Analitik.html" class="active"><i class="fas fa-chart-bar"></i> Dashboard</a>
+                    <a href="data-management.html"><i class="fas fa-database"></i> Data</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-title">
+            <h1>Sistem Manajemen Data Gardu Listrik</h1>
+            <p>Kelola data koordinat dan pemakaian gardu secara terintegrasi</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="tab-navigation">
+            <button class="tab-btn active" data-tab="koordinat">
+                <i class="fas fa-map-marker-alt"></i> Data Koordinat Gardu
+            </button>
+            <button class="tab-btn" data-tab="pemakaian">
+                <i class="fas fa-chart-line"></i> Data Pemakaian Gardu
+            </button>
+        </div>
+
+        <!-- TAB 1: Data Koordinat Gardu -->
+        <div id="tab-koordinat" class="tab-content active">
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stats-card">
+                    <div class="stats-number" id="total-koordinat">0</div>
+                    <div class="stats-label">Total Gardu</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number" id="last-updated-koordinat">-</div>
+                    <div class="stats-label">Terakhir Diperbarui</div>
+                </div>
+            </div>
+
+            <!-- Data Actions -->
+            <div class="data-actions">
+                <button class="btn btn-primary" id="btnRefreshKoordinat">
+                    <i class="fas fa-sync"></i> Refresh Data
+                </button>
+                <button class="btn btn-outline" id="btnExportKoordinat">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="btn btn-success" id="btnTambahKoordinat">
+                    <i class="fas fa-plus"></i> Tambah Data Gardu
+                </button>
+            </div>
+
+            <!-- Data Section -->
+            <div class="data-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-table"></i> Data Gardu UP3 LSM</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-koordinat" placeholder="Cari data gardu...">
+                    </div>
+                </div>
+                
+                <p>Sumber: <a href="https://docs.google.com/spreadsheets/d/1_VlE78JhUjRCdpoGHm31ewPpvMde8bAL3lz7-toMCYA/edit" target="_blank">Google Spreadsheet</a></p>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama Gardu</th>
+                                <th>Fasa Trafo</th>
+                                <th>Jenis Trafo</th>
+                                <th>Kapasitas</th>
+                                <th>Tap Change</th>
+                                <th>Tahun Buat</th>
+                                <th>Penyulang</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th width="120">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-koordinat">
+                            <tr>
+                                <td colspan="11" style="text-align: center; padding: 40px;">
+                                    <i class="fas fa-spinner fa-spin"></i> Memuat data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: Data Pemakaian Gardu -->
+        <div id="tab-pemakaian" class="tab-content">
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stats-card">
+                    <div class="stats-number" id="total-pemakaian">0</div>
+                    <div class="stats-label">Total Data</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number" id="current-ulp">-</div>
+                    <div class="stats-label">ULP Aktif</div>
+                </div>
+            </div>
+
+            <!-- Data Actions -->
+            <div class="data-actions">
+                <button class="btn btn-primary" id="btnRefreshPemakaian">
+                    <i class="fas fa-sync"></i> Refresh Data
+                </button>
+                <button class="btn btn-outline" id="btnExportPemakaian">
+                    <i class="fas fa-download"></i> Export ke Excel
+                </button>
+                <button class="btn btn-success" id="btnTambahPemakaian">
+                    <i class="fas fa-plus"></i> Tambah Data
+                </button>
+            </div>
+
+            <!-- Sheet Selector -->
+            <div class="data-section">
+                <h2><i class="fas fa-building"></i> Pilih ULP</h2>
+                <div class="sheet-selector">
+                    <button class="sheet-btn active" data-gid="1549551008" data-name="LSM">ULP LSM</button>
+                    <button class="sheet-btn" data-gid="1060726527" data-name="KRG">ULP KRG</button>
+                    <button class="sheet-btn" data-gid="204082539" data-name="GDG">ULP GDG</button>
+                    <button class="sheet-btn" data-gid="1914134643" data-name="PLB">ULP PLB</button>
+                    <button class="sheet-btn" data-gid="1417089420" data-name="BRN">ULP BRN</button>
+                    <button class="sheet-btn" data-gid="558756175" data-name="MTG">ULP MTG</button>
+                    <button class="sheet-btn" data-gid="1145959992" data-name="TKN">ULP TKN</button>
+                    <button class="sheet-btn" data-gid="1910307016" data-name="LSK">ULP LSK</button>
+                    <button class="sheet-btn" data-gid="1749872034" data-name="JNT">ULP JNT</button>
+                    <button class="sheet-btn" data-gid="310383650" data-name="GDP">ULP GDP</button>
+                    <button class="sheet-btn" data-gid="51144397" data-name="SML">ULP SML</button>
+                </div>
+            </div>
+
+            <!-- Data Section -->
+            <div class="data-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Data Pemakaian Gardu</h2>
+                </div>
+                
+                <p>Sumber: <a href="https://docs.google.com/spreadsheets/d/11ZqsQ5YRNHRVrlLDHsP2OXbFzix6Lwh0JiTJZE5pgJI/edit" target="_blank">Google Spreadsheet</a></p>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead id="thead-pemakaian"></thead>
+                        <tbody id="tbody-pemakaian">
+                            <tr>
+                                <td colspan="50" style="text-align: center; padding: 20px;">
+                                    <i class="fas fa-info-circle"></i> Pilih ULP untuk melihat data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Data Koordinat -->
+    <div class="modal" id="modalKoordinat">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> <span id="modalTitleKoordinat">Tambah Data Gardu</span></h3>
+                <button class="close-modal" data-modal="modalKoordinat">&times;</button>
+            </div>
+            <form id="formKoordinat">
+                <input type="hidden" id="edit-id-koordinat">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nama Gardu <span style="color: var(--pln-red);">*</span></label>
+                        <input type="text" id="nama_gardu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fasa Trafo</label>
+                        <input type="text" id="fasa_trafo">
+                    </div>
+                    <div class="form-group">
+                        <label>Jenis Trafo</label>
+                        <input type="text" id="jenis_traf">
+                    </div>
+                    <div class="form-group">
+                        <label>Kapasitas</label>
+                        <input type="text" id="kapasitas">
+                    </div>
+                    <div class="form-group">
+                        <label>Tap Change</label>
+                        <input type="text" id="tap_change">
+                    </div>
+                    <div class="form-group">
+                        <label>Tahun Buat</label>
+                        <input type="text" id="th_buat">
+                    </div>
+                    <div class="form-group">
+                        <label>Penyulang</label>
+                        <input type="text" id="penyulang">
+                    </div>
+                    <div class="form-group">
+                        <label>Latitude (Y)</label>
+                        <input type="text" id="latitudey">
+                    </div>
+                    <div class="form-group">
+                        <label>Longitude (X)</label>
+                        <input type="text" id="longitudex">
+                    </div>
+                </div>
+                <div style="margin-top: 25px; display: flex; gap: 15px;">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-outline" data-modal="modalKoordinat">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Data Pemakaian -->
+    <div class="modal" id="modalPemakaian">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> <span id="modalTitlePemakaian">Tambah Data</span></h3>
+                <button class="close-modal" data-modal="modalPemakaian">&times;</button>
+            </div>
+            <form id="formPemakaian">
+                <input type="hidden" id="editRowIndex">
+                <input type="hidden" id="editGid">
+                <input type="hidden" id="originalKodeGardu">
+                <div class="form-grid" id="formFieldsPemakaian"></div>
+                <div style="margin-top: 25px; display: flex; gap: 15px;">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Simpan
+                    </button>
+                    <button type="button" class="btn btn-outline" data-modal="modalPemakaian">
+                        <i class="fas fa-times"></i> Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal" id="modalHapus">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle" style="color: var(--pln-yellow);"></i> Konfirmasi Hapus</h3>
+                <button class="close-modal" data-modal="modalHapus">&times;</button>
+            </div>
+            <div style="padding: 20px;">
+                <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                    <small><i class="fas fa-info-circle"></i> Data akan dihapus permanen dari spreadsheet.</small>
+                </div>
+            </div>
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button class="btn btn-outline" data-modal="modalHapus">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+                <button class="btn btn-danger" id="confirm-delete">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PLN Monitoring</h3>
+                    <a href="#">Tentang Kami</a>
+                    <a href="#">Kontak</a>
+                    <a href="#">Kebijakan Privasi</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Bantuan</h3>
+                    <a href="#">Pusat Bantuan</a>
+                    <a href="#">Dokumentasi</a>
+                    <a href="#">Dukungan Teknis</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Layanan</h3>
+                    <a href="#">Peta Monitoring</a>
+                    <a href="#">Laporan</a>
+                    <a href="#">API</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PLN Monitoring System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./assets/js/data-management.js"></script>
+</body>
+</html>

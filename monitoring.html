@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Peta Gardu + Beban - PLN Monitoring</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/monitoring.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="title-section">
+                            <h1>Monitoring Aset Trafo System</h1>
+                            <div class="subtitle">Peta Distribusi Gardu & Beban Real-time</div>
+                        </div>
+                    </div>
+                    <div></div>
+                    <div class="controls">
+                        <div class="search-container">
+                            <div class="search-icon">🔍</div>
+                            <input id="search" type="text" placeholder="Cari nama/kode/penyulang…" />
+                        </div>
+                        <div class="filter-group">
+                    <select id="ulpFilter" class="filter-select">
+                        <option value="all">Semua ULP</option>
+                        <option value="ULP LSM">ULP LSM</option>
+                        <option value="ULP KRG">ULP KRG</option>
+                        <option value="ULP GDG">ULP GDG</option>
+                        <option value="ULP PLB">ULP PLB</option>
+                        <option value="ULP BRN">ULP BRN</option>
+                        <option value="ULP MTG">ULP MTG</option>
+                        <option value="ULP TKN">ULP TKN</option>
+                        <option value="ULP LSK">ULP LSK</option>
+                        <option value="ULP JNT">ULP JNT</option>
+                        <option value="ULP GDP">ULP GDP</option>
+                        <option value="ULP SML">ULP SML</option>
+                    </select>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="all">Semua Status</option>
+                        <option value="normal">Normal (Hijau)</option>
+                        <option value="medium">Sedang (Kuning)</option>
+                        <option value="high">Tinggi (Merah)</option>
+                        <option value="nodata">Tidak Ada Data</option>
+                    </select>
+                    <button id="btnReset">Reset & Zoom</button>
+                    <button id="btnExport">📊 Export Data</button>
+                </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <!-- Statistics Panel -->
+            <div class="stats-panel" id="statsPanel">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalGardu">-</span>
+                    <div class="stat-label">Total Gardu</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="activeGardu">-</span>
+                    <div class="stat-label">Aktif</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="highLoadGardu">-</span>
+                    <div class="stat-label">Beban Tinggi</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="matchedData">-</span>
+                    <div class="stat-label">Data Match</div>
+                </div>
+            </div>
+            
+            <!-- Filter Info Panel -->
+            <div class="filter-info loading" id="filterInfo">
+                <div class="filter-info-content">
+                    <div class="filter-info-icon">⏳</div>
+                    <div class="filter-info-text">
+                        <div class="filter-info-title">Memuat data sistem...</div>
+                        <div class="filter-info-details">Harap tunggu sebentar</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-title">Status Beban Gardu</div>
+                <div class="item"><span class="dot green"></span> Normal (&lt; 40%)</div>
+                <div class="item"><span class="dot yellow"></span> Sedang (40-85%)</div>
+                <div class="item"><span class="dot red"></span> Tinggi (&gt; 85%)</div>
+                <div class="item"><span class="dot gray"></span> Tidak ada data</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="export-modal" id="exportModal">
+        <div class="export-modal-content">
+            <h3>📊 Export Data</h3>
+            <p style="margin-bottom: 20px; color: var(--pln-gray);">Pilih format export untuk data yang difilter:</p>
+            <div class="export-options">
+                <button class="export-option-btn" id="exportCSV">CSV</button>
+                <button class="export-option-btn" id="exportExcel">Excel</button>
+            </div>
+            <button class="export-cancel-btn" id="exportCancel">Batal</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/monitoring.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PLN Monitoring System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+    <div class="bg-element"></div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <h1>PLN Monitoring</h1>
+            <p>Sistem Monitoring Aset Trafo</p>
+            <p class="version">UP3 LHOKSUMAWE v2.0</p>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" class="form-control" placeholder="Masukkan username" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Ingat saya</label>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i>
+                <span id="btnText">Masuk</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <!-- System Info -->
+        <div class="system-info">
+            <h4><i class="fas fa-info-circle"></i> Informasi Sistem</h4>
+            <p>Sistem monitoring real-time untuk mengelola aset trafo dan distribusi gardu listrik. Pastikan Anda memiliki otorisasi untuk mengakses sistem ini.</p>
+        </div>
+
+        <!-- Login Footer -->
+        <div class="login-footer">
+            <div class="divider">
+                <span>Bantuan</span>
+            </div>
+            <div class="help-links">
+                <a href="#forgot"><i class="fas fa-key"></i> Lupa Password?</a>
+                <a href="#contact"><i class="fas fa-headset"></i> Hubungi Admin</a>
+            </div>
+            <p style="margin-top: 20px;">&copy; 2023 PLN Monitoring System. All rights reserved.</p>
+            <p>Dibangun dengan <i class="fas fa-heart" style="color: var(--pln-red);"></i> untuk Indonesia</p>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/login.js"></script>
+</body>
+</html>

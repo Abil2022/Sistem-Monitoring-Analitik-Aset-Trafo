@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLN - Sistem Monitoring Aset Trafo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+</head>
+<body>
+    <!-- Alert Banner -->
+    <div class="alert-banner">
+        <div class="container">
+            <i class="fas fa-exclamation-circle"></i>
+            <span><strong>Peringatan:</strong> 15 gardu di ULP GDG mengalami beban tinggi >85% - Perlu tindakan segera</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>PLN Monitoring System</h1>
+                        <p>Aset Trafo & Distribusi Gardu</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active"><i class="fas fa-home"></i> Beranda</a></li>
+                        <li><a href="monitoring.html"><i class="fas fa-map-marked-alt"></i> Peta Monitoring</a></li>
+                        <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+                        <li><a href="data-management.html"><i class="fas fa-database"></i> Manajemen Data</a></li>
+                        <li><a href="#" data-action="logout"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Sistem Monitoring Aset Trafo PLN</h2>
+                <p>Platform real-time untuk memantau distribusi gardu dan beban trafo di seluruh jaringan PLN. Pantau kondisi aset, identifikasi potensi masalah, dan optimalkan operasional dengan data yang akurat.</p>
+                <div class="cta-buttons">
+                    <a href="monitoring.html" class="cta-button">
+                        <i class="fas fa-play-circle"></i> Buka Aplikasi Monitoring
+                    </a>
+                    <a href="#quick-access" class="cta-button secondary">
+                        <i class="fas fa-compass"></i> Jelajahi Fitur
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Section -->
+    <section class="quick-access" id="quick-access">
+        <div class="container">
+            <div class="section-title">
+                <h2>Akses Cepat ke Sistem</h2>
+                <p>Jelajahi semua fitur dan modul sistem monitoring kami</p>
+            </div>
+            <div class="quick-access-grid">
+                <div class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Peta Monitoring</h3>
+                    <p>Visualisasi real-time lokasi gardu distribusi dengan status beban pada peta interaktif</p>
+                    <a href="monitoring.html" class="access-link">
+                        Buka Peta <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Dashboard Analitik</h3>
+                    <p>Analisis data dan statistik performa sistem dengan visualisasi grafis yang informatif</p>
+                    <a href="dashboard.html" class="access-link">
+                        Lihat Dashboard <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="access-card">
+                    <div class="access-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Manajemen Data</h3>
+                    <p>Kelola sumber data, konfigurasi sistem, dan integrasi dengan API untuk kebutuhan khusus</p>
+                    <a href="data-management.html" class="access-link">
+                        Kelola Data <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalGardu">1,328</div>
+                    <div class="stat-label">Total Gardu Terpantau</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeGardu">11</div>
+                    <div class="stat-label">ULP Tercover</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="dataSync">98.7%</div>
+                    <div class="stat-label">Data Tersinkron</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="monitoringStatus">24/7</div>
+                    <div class="stat-label">Monitoring Aktif</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fitur Utama Sistem</h2>
+                <p>Platform monitoring kami dilengkapi dengan berbagai fitur canggih untuk mendukung operasional PLN</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Pemetaan Real-time</h3>
+                    <p>Visualisasi lokasi gardu distribusi pada peta interaktif dengan status beban yang diperbarui secara real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Monitoring Beban</h3>
+                    <p>Pantau tingkat beban trafo dengan sistem warna: hijau (normal), kuning (sedang), merah (tinggi).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                    <h3>Filter & Pencarian</h3>
+                    <p>Filter data berdasarkan ULP, status beban, atau pencarian langsung untuk analisis yang lebih terfokus.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Integrasi Data</h3>
+                    <p>Terintegrasi dengan Google Sheets untuk sinkronisasi data yang mudah dan aksesibilitas tinggi.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Responsive Design</h3>
+                    <p>Akses sistem dari berbagai perangkat dengan antarmuka yang optimal di desktop, tablet, dan mobile.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Notifikasi Real-time</h3>
+                    <p>Sistem peringatan otomatis untuk gardu dengan beban tinggi atau data yang tidak terupdate.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>PLN Monitoring System</h3>
+                    <p>Sistem monitoring real-time untuk aset trafo dan distribusi gardu PLN. Memastikan keandalan pasokan listrik dengan teknologi terkini.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Link Cepat</h3>
+                    <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
+                    <a href="monitoring.html"><i class="fas fa-map-marked-alt"></i> Peta Monitoring</a>
+                    <a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard Analitik</a>
+                    <a href="data-management.html"><i class="fas fa-database"></i> Manajemen Data</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Kontak & Dukungan</h3>
+                    <a href="mailto:info@pln-monitoring.id"><i class="fas fa-envelope"></i> info@pln-monitoring.id</a>
+                    <a href="tel:+62215501234"><i class="fas fa-phone"></i> +62 21 550 1234</a>
+                    <a href="#"><i class="fas fa-question-circle"></i> Pusat Bantuan</a>
+                    <a href="#"><i class="fas fa-book"></i> Dokumentasi</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Informasi</h3>
+                    <a href="#"><i class="fas fa-info-circle"></i> Tentang Kami</a>
+                    <a href="#"><i class="fas fa-shield-alt"></i> Kebijakan Privasi</a>
+                    <a href="#"><i class="fas fa-file-contract"></i> Syarat & Ketentuan</a>
+                    <a href="#"><i class="fas fa-sitemap"></i> Peta Situs</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 PLN Monitoring System. All rights reserved. | Dibangun dengan <i class="fas fa-heart" style="color: #ff6b6b;"></i> untuk Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/home.js"></script>
+</body>
+</html>
