@@ -269,6 +269,54 @@ class ModalManager {
     }
 }
 
+// Mobile Menu Manager
+class MobileMenuManager {
+    static init() {
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+        // Pastikan semua elemen ditemukan sebelum menambahkan event listener
+        if (mobileMenuToggle && navLinks && mobileMenuOverlay) {
+            
+            // Fungsi untuk membuka menu mobile
+            function openMobileMenu() {
+                navLinks.classList.add('active');
+                mobileMenuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Mencegah background scroll
+            }
+
+            // Fungsi untuk menutup menu mobile
+            function closeMobileMenu() {
+                navLinks.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                document.body.style.overflow = ''; // Kembalikan scroll
+            }
+
+            // Buka/tutup menu saat tombol hamburger diklik
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation(); // Mencegah event menyebar
+                if (navLinks.classList.contains('active')) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            });
+
+            // Tutup menu saat overlay (latar belakang gelap) diklik
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+            // (Opsional) Tutup menu saat salah satu tautan diklik
+            const navLinksItems = navLinks.querySelectorAll('a');
+            navLinksItems.forEach(link => {
+                link.addEventListener('click', () => {
+                    closeMobileMenu();
+                });
+            });
+        }
+    }
+}
+
 // Fungsi bersama untuk mendapatkan kode gardu
 function getKodeHeuristic(row) {
     const KODE_KEYS = [
@@ -302,6 +350,7 @@ window.modal = ModalManager;
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
     ModalManager.init();
+    MobileMenuManager.init();
 
     if (!window.location.pathname.includes('login.html') && 
         !window.location.pathname.includes('index.html')) {

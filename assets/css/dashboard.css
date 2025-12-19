@@ -32,15 +32,17 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
+/* Header - DIPERKUAT */
 header {
     background: linear-gradient(135deg, var(--pln-blue) 0%, var(--pln-blue-light) 100%);
     color: white;
     padding: 1rem 0;
     box-shadow: var(--shadow);
+    /* Pastikan header selalu di atas dan melekat */
     position: sticky;
     top: 0;
     z-index: 1000;
+    width: 100%;
 }
 
 .header-content {
@@ -86,25 +88,27 @@ header {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* Mobile Menu */
+/* Mobile Menu Toggle - Disembunyikan di Desktop */
 .mobile-menu-toggle {
-    display: none;
+    display: none; /* Tidak akan terlihat di layar besar */
     background: none;
     border: none;
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
+    padding: 5px;
 }
 
+/* Mobile Menu Overlay - Latar Belakang Gelap saat Menu Buka */
 .mobile-menu-overlay {
-    display: none;
+    display: none; /* Disembunyikan secara default */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
+    z-index: 999; /* Di bawah header, di atas konten */
 }
 
 /* Main Content */
@@ -157,14 +161,8 @@ main {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .spinner {
@@ -671,7 +669,7 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Responsive Design */
+/* --- RESPONSIVE DESIGN --- */
 @media (max-width: 1200px) {
     .dashboard-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
     .performance-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
@@ -683,36 +681,50 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .mobile-menu-toggle { display: block; }
-    
+    /* Tampilkan tombol hamburger */
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    /* Sembunyikan menu navigasi dan atur untuk slide-in */
     .nav-links {
         position: fixed;
         top: 0;
-        right: -300px;
-        width: 250px;
+        right: -280px; /* Posisikan di luar layar */
+        width: 280px;
         height: 100%;
         background: var(--pln-blue);
         flex-direction: column;
-        padding: 70px 20px 20px;
-        transition: right 0.3s ease;
-        z-index: 1001;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        padding: 80px 20px 20px; /* Beri jarak dari atas */
+        transition: right 0.3s ease-in-out;
+        z-index: 1001; /* Pastikan di atas overlay dan header */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
     }
     
-    .nav-links.active { right: 0; }
+    /* Saat menu aktif (dibuka), geser ke dalam layar */
+    .nav-links.active {
+        right: 0;
+    }
     
-    .nav-links a { margin-bottom: 10px; padding: 12px 15px; border-radius: 8px; }
-    
-    .mobile-menu-overlay.active { display: block; }
+    /* Tampilkan overlay saat menu aktif */
+    .mobile-menu-overlay.active {
+        display: block;
+    }
+
+    /* Gaya tautan di dalam menu mobile */
+    .nav-links a {
+        margin-bottom: 10px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        width: 100%;
+        text-align: left;
+    }
     
     .dashboard-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-    
     .filter-section { flex-direction: column; align-items: stretch; }
     .filter-group { flex-direction: column; align-items: stretch; }
     .filter-info { margin-left: 0; text-align: center; margin-top: 10px; }
-    
     .action-btn { opacity: 1; }
-    
     .page-title h1 { font-size: 1.8rem; }
     .chart-container { height: 200px; }
     .performance-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
