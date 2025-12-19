@@ -10,9 +10,10 @@ let dataToDelete = null;
 let deleteMode = null; // 'koordinat' atau 'pemakaian'
 
 // Pemakaian variables
+let allDataPemakaian = []; // Variabel baru untuk menyimpan semua data
+let currentDataPemakaian = [];
 let currentGid = '1549551008';
 let currentSheetName = 'LSM';
-let currentDataPemakaian = [];
 
 // Konfigurasi Sheet Pemakaian
 const SHEET_CONFIGS = {
@@ -297,6 +298,11 @@ function initPemakaianHandlers() {
     document.getElementById('btnExportPemakaian').addEventListener('click', exportPemakaian);
     document.getElementById('btnTambahPemakaian').addEventListener('click', () => openModalPemakaian('add'));
     
+    // Event listener untuk pencarian
+    document.getElementById('search-pemakaian').addEventListener('input', function() {
+        filterPemakaian(this.value);
+    });
+    
     document.querySelectorAll('.sheet-btn').forEach(btn => {
         btn.addEventListener('click', function() {
             document.querySelectorAll('.sheet-btn').forEach(b => b.classList.remove('active'));
@@ -305,6 +311,10 @@ function initPemakaianHandlers() {
             currentGid = this.getAttribute('data-gid');
             currentSheetName = this.getAttribute('data-name');
             document.getElementById('current-ulp').textContent = currentSheetName;
+            
+            // Reset pencarian saat berganti sheet
+            document.getElementById('search-pemakaian').value = '';
+            
             loadDataPemakaian();
         });
     });
@@ -340,56 +350,30 @@ async function loadDataPemakaian() {
         headerHtml += '<th>Aksi</th></tr>';
         thead.innerHTML = headerHtml;
 
-        let bodyHtml = '';
-        currentDataPemakaian = [];
+        allDataPemakaian = []; // Simpan semua data
+        currentDataPemakaian = []; // Data yang akan ditampilkan
         
         for (let i = 0; i < rows.length; i++) {
             const row = rows[i];
             const cells = row.c;
             const rowData = {};
             
-            bodyHtml += `<tr><td>${i + 1}</td>`;
-            
             for (let j = 0; j < headers.length; j++) {
                 const cellIndex = j + 2;
                 const value = cells[cellIndex]?.v || '';
                 rowData[`col_${j}`] = value;
-                
-                if (headers[j].includes('Pemakaian (%)')) {
-                    const pemakaian = parseFloat(value) || 0;
-                    let statusClass = 'status-normal';
-                    let statusText = 'Normal';
-                    
-                    if (pemakaian > 80) {
-                        statusClass = 'status-high';
-                        statusText = 'Tinggi';
-                    } else if (pemakaian > 50) {
-                        statusClass = 'status-medium';
-                        statusText = 'Sedang';
-                    }
-                    
-                    bodyHtml += `<td><span class="status-badge ${statusClass}">${value}% ${statusText}</span></td>`;
-                } else {
-                    bodyHtml += `<td>${value}</td>`;
-                }
             }
             
             rowData.rowIndex = i + 1;
-            currentDataPemakaian.push(rowData);
-            
-            bodyHtml += `
-                <td class="action-buttons">
-                    <button class="btn btn-outline btn-small" onclick="editPemakaian(${i})" title="Edit">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-small" onclick="showDeleteModal('pemakaian', ${i})" title="Hapus">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </td>
-            </tr>`;
+            allDataPemakaian.push(rowData);
         }
         
-        tbody.innerHTML = bodyHtml;
+        // Salin semua data ke data yang ditampilkan
+        currentDataPemakaian = [...allDataPemakaian];
+        
+        // Render tabel
+        renderTablePemakaian();
+        
         document.getElementById('total-pemakaian').textContent = currentDataPemakaian.length;
         document.getElementById('current-ulp').textContent = currentSheetName;
         showNotification('Data pemakaian berhasil dimuat', 'success');
@@ -398,6 +382,77 @@ async function loadDataPemakaian() {
         tbody.innerHTML = '<tr><td colspan="50" style="text-align: center; padding: 20px; color: var(--pln-red);"><i class="fas fa-exclamation-triangle"></i> Gagal memuat data</td></tr>';
         showNotification('Gagal memuat data pemakaian', 'error');
     }
+}
+
+function renderTablePemakaian() {
+    const tbody = document.getElementById('tbody-pemakaian');
+    const sheetConfig = SHEET_CONFIGS[currentSheetName];
+    const headers = sheetConfig.columns;
+    
+    let bodyHtml = '';
+    
+    currentDataPemakaian.forEach((rowData, i) => {
+        const originalIndex = allDataPemakaian.indexOf(rowData);
+        bodyHtml += `<tr><td>${i + 1}</td>`;
+        
+        for (let j = 0; j < headers.length; j++) {
+            const value = rowData[`col_${j}`] || '';
+            
+            if (headers[j].includes('Pemakaian (%)')) {
+                const pemakaian = parseFloat(value) || 0;
+                let statusClass = 'status-normal';
+                let statusText = 'Normal';
+                
+                if (pemakaian > 80) {
+                    statusClass = 'status-high';
+                    statusText = 'Tinggi';
+                } else if (pemakaian > 50) {
+                    statusClass = 'status-medium';
+                    statusText = 'Sedang';
+                }
+                
+                bodyHtml += `<td><span class="status-badge ${statusClass}">${value}% ${statusText}</span></td>`;
+            } else {
+                bodyHtml += `<td>${value}</td>`;
+            }
+        }
+        
+        bodyHtml += `
+            <td class="action-buttons">
+                <button class="btn btn-outline btn-small" onclick="editPemakaian(${originalIndex})" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-small" onclick="showDeleteModal('pemakaian', ${originalIndex})" title="Hapus">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>`;
+    });
+    
+    tbody.innerHTML = bodyHtml;
+}
+
+function filterPemakaian(searchTerm) {
+    if (!searchTerm) {
+        currentDataPemakaian = [...allDataPemakaian];
+    } else {
+        const term = searchTerm.toLowerCase();
+        currentDataPemakaian = allDataPemakaian.filter(rowData => {
+            // Cari di semua kolom
+            for (const key in rowData) {
+                if (key.startsWith('col_')) {
+                    const value = rowData[key];
+                    if (value && value.toString().toLowerCase().includes(term)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+    }
+    
+    renderTablePemakaian();
+    document.getElementById('total-pemakaian').textContent = currentDataPemakaian.length;
 }
 
 function openModalPemakaian(mode, dataIndex = null) {
@@ -414,7 +469,7 @@ function openModalPemakaian(mode, dataIndex = null) {
         document.getElementById('originalKodeGardu').value = '';
     } else {
         title.textContent = `Edit Data ${currentSheetName}`;
-        const rowData = currentDataPemakaian[dataIndex];
+        const rowData = allDataPemakaian[dataIndex];
         document.getElementById('editRowIndex').value = rowData.rowIndex;
         document.getElementById('editGid').value = currentGid;
         document.getElementById('originalKodeGardu').value = rowData.col_0;
@@ -423,7 +478,7 @@ function openModalPemakaian(mode, dataIndex = null) {
     let fieldsHtml = '';
     headers.forEach((header, index) => {
         const fieldId = `field_${index}`;
-        const value = mode === 'edit' ? (currentDataPemakaian[dataIndex][`col_${index}`] || '') : '';
+        const value = mode === 'edit' ? (allDataPemakaian[dataIndex][`col_${index}`] || '') : '';
         
         fieldsHtml += `
             <div class="form-group">
@@ -547,7 +602,7 @@ function showDeleteModal(mode, id) {
 window.showDeleteModal = showDeleteModal;
 
 document.getElementById('confirm-delete').addEventListener('click', async function() {
-    if (!dataToDelete || !deleteMode) return;
+    if (!dataToDelete && dataToDelete !== 0) return;
     
     try {
         if (deleteMode === 'koordinat') {
@@ -568,7 +623,7 @@ document.getElementById('confirm-delete').addEventListener('click', async functi
                 showNotification('Gagal menghapus: ' + data.message, 'error');
             }
         } else if (deleteMode === 'pemakaian') {
-            const rowIndex = currentDataPemakaian[dataToDelete].rowIndex;
+            const rowIndex = allDataPemakaian[dataToDelete].rowIndex;
             
             const response = await fetch(API_PEMAKAIAN, {
                 method: 'POST',

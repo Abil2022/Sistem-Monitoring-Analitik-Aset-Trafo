@@ -256,6 +256,47 @@ footer {
     100% { transform: rotate(360deg); }
 }
 
+/* PERUBAHAN: Alert Banner Styles dengan Animasi */
+.alert-banner {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%); /* Default untuk kritis */
+    color: white;
+    padding: 15px 0;
+    text-align: center;
+    display: flex; /* Ubah ke flex agar bisa di-animasi opacity-nya */
+    opacity: 1; /* Pastikan terlihat saat ada alert */
+    transform: translateY(0);
+    /* TAMBAHKAN BARIS INI untuk animasi peralihan yang halus */
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; 
+}
+
+/* TAMBAHKAN kelas ini untuk menyembunyikan banner dengan animasi */
+.alert-banner.updating {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Tambahkan kelas untuk tipe warning */
+.alert-banner.warning {
+    background: linear-gradient(135deg, var(--pln-yellow) 0%, #ffed4e 100%);
+    color: var(--pln-dark);
+}
+
+/* Tambahkan kelas untuk tipe info */
+.alert-banner.info {
+    background: linear-gradient(135deg, var(--pln-blue) 0%, var(--pln-blue-light) 100%);
+}
+
+.alert-banner .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.alert-banner i {
+    font-size: 1.2rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .header-content {

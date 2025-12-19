@@ -25,13 +25,9 @@ const ULP_CONFIG = [
 // Utility Functions
 class Utils {
     static showNotification(message, type = 'success') {
-        // Remove existing notification
         const existing = document.querySelector('.notification');
-        if (existing) {
-            existing.remove();
-        }
+        if (existing) existing.remove();
 
-        // Create new notification
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
@@ -40,11 +36,7 @@ class Utils {
         `;
         
         document.body.appendChild(notification);
-        
-        // Trigger animation
         setTimeout(() => notification.classList.add('show'), 100);
-        
-        // Auto hide
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => notification.remove(), 300);
@@ -199,7 +191,6 @@ class APIManager {
         return this.request(url, { method: 'DELETE' });
     }
 
-    // Google Sheets specific methods
     async gvizFetch(sheetId, gid) {
         return new Promise((resolve, reject) => {
             const prev = window.google?.visualization?.Query?.setResponse;
@@ -259,7 +250,6 @@ class ModalManager {
     }
 
     static init() {
-        // Close modal when clicking outside
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.style.display = 'none';
@@ -267,7 +257,6 @@ class ModalManager {
             }
         });
 
-        // Close modal with close buttons
         document.querySelectorAll('.close-modal').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const modal = e.target.closest('.modal');
@@ -280,6 +269,30 @@ class ModalManager {
     }
 }
 
+// Fungsi bersama untuk mendapatkan kode gardu
+function getKodeHeuristic(row) {
+    const KODE_KEYS = [
+        "nama gardu", "nama_gardu", "kode gardu", "kode_gardu",
+        "kode gardu relasi", "kode_gardu_relasi", "assetnum", "kode_peral",
+        "nama gardu relasi", "nama_gardu_relasi"
+    ];
+    
+    for (const k of KODE_KEYS) {
+        if (row[k] != null && String(row[k]).trim() !== "") return String(row[k]).trim();
+    }
+    
+    let hit = Object.keys(row).find(h => h.includes("kode") && h.includes("gardu"));
+    if (hit && row[hit]) return String(row[hit]).trim();
+    
+    hit = Object.keys(row).find(h => h.includes("relasi") && h.includes("gardu"));
+    if (hit && row[hit]) return String(row[hit]).trim();
+    
+    hit = Object.keys(row).find(h => h.includes("kode"));
+    if (hit && row[hit]) return String(row[hit]).trim();
+    
+    return "";
+}
+
 // Global instances
 window.utils = Utils;
 window.session = SessionManager;
@@ -288,16 +301,13 @@ window.modal = ModalManager;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize modal manager
     ModalManager.init();
 
-    // Check authentication on protected pages
     if (!window.location.pathname.includes('login.html') && 
         !window.location.pathname.includes('index.html')) {
         SessionManager.requireAuth();
     }
 
-    // Add logout functionality
     const logoutBtn = document.querySelector('[data-action="logout"]');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
