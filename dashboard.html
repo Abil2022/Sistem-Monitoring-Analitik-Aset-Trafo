@@ -22,19 +22,25 @@
                         <h2>PLN Monitoring</h2>
                     </div>
                 </div>
-                <div class="nav-links">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav class="nav-links" id="navLinks">
                     <a href="index.html"><i class="fas fa-home"></i> Beranda</a>
                     <a href="monitoring.html"><i class="fas fa-map"></i> Peta Monitoring</a>
                     <a href="dashboard.html" class="active"><i class="fas fa-chart-bar"></i> Dashboard</a>
                     <a href="data-management.html"><i class="fas fa-database"></i> Data</a>
                     <a href="#" data-action="logout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
-                </div>
+                </nav>
             </div>
         </div>
     </header>
 
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
     <!-- Main Content -->
-    <div class="container">
+    <main class="container">
         <!-- Page Title -->
         <div class="page-title">
             <h1>Dashboard Analitik</h1>
@@ -42,9 +48,11 @@
         </div>
 
         <!-- Loading Indicator -->
-        <div id="loadingIndicator" class="loading">
-            <div class="spinner"></div>
-            <span style="margin-left: 10px;">Memuat data...</span>
+        <div id="loadingIndicator" class="loading-overlay">
+            <div class="loading-container">
+                <div class="spinner"></div>
+                <p class="loading-text">Memuat data...</p>
+            </div>
         </div>
 
         <!-- Error Message -->
@@ -52,13 +60,13 @@
             <i class="fas fa-exclamation-triangle"></i>
             <h3>Gagal Memuat Data</h3>
             <p>Silakan refresh halaman atau coba lagi nanti.</p>
-            <button id="retryButton" style="margin-top: 15px; padding: 10px 20px; background: var(--pln-blue); color: white; border: none; border-radius: 5px; cursor: pointer;">
+            <button id="retryButton" class="retry-button">
                 <i class="fas fa-redo"></i> Coba Lagi
             </button>
         </div>
 
         <!-- Filter Section -->
-        <div class="filter-section" id="filterSection" style="display: none;">
+        <section class="filter-section" id="filterSection" style="display: none;">
             <div class="filter-group">
                 <span class="filter-label">Filter ULP:</span>
                 <select id="ulpFilter" class="filter-select">
@@ -68,7 +76,7 @@
             <div class="filter-info" id="filterInfo">
                 Menampilkan data dari <strong>Semua ULP</strong>
             </div>
-        </div>
+        </section>
 
         <!-- Stats Overview -->
         <div class="dashboard-grid" id="statsOverview" style="display: none;">
@@ -122,10 +130,13 @@
         </div>
 
         <!-- Charts Section -->
-        <div class="charts-section" id="chartsSection" style="display: none;">
+        <section class="charts-section" id="chartsSection" style="display: none;">
             <div class="chart-card">
                 <div class="chart-header">
                     <h2>Distribusi Beban per ULP</h2>
+                    <button class="chart-toggle" data-chart="ulpDistribution">
+                        <i class="fas fa-expand"></i>
+                    </button>
                 </div>
                 <div class="chart-container">
                     <canvas id="ulpDistributionChart"></canvas>
@@ -134,29 +145,42 @@
             <div class="chart-card">
                 <div class="chart-header">
                     <h2>Distribusi Status Beban</h2>
+                    <button class="chart-toggle" data-chart="statusDistribution">
+                        <i class="fas fa-expand"></i>
+                    </button>
                 </div>
                 <div class="chart-container">
                     <canvas id="statusDistributionChart"></canvas>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- ULP Performance -->
-        <div class="ulp-performance" id="ulpPerformance" style="display: none;">
-            <h2>Performa per ULP</h2>
+        <section class="ulp-performance" id="ulpPerformance" style="display: none;">
+            <div class="section-header">
+                <h2>Performa per ULP</h2>
+                <button class="view-toggle" id="ulpViewToggle">
+                    <i class="fas fa-th-large"></i>
+                </button>
+            </div>
             <div class="performance-grid" id="ulpPerformanceGrid">
                 <!-- ULP cards will be populated by JavaScript -->
             </div>
-        </div>
+        </section>
 
         <!-- Alert Section -->
-        <div class="alert-section" id="alertSection" style="display: none;">
-            <h2>Peringatan Sistem</h2>
+        <section class="alert-section" id="alertSection" style="display: none;">
+            <div class="section-header">
+                <h2>Peringatan Sistem</h2>
+                <button class="alert-filter" id="alertFilter">
+                    <i class="fas fa-filter"></i>
+                </button>
+            </div>
             <div class="alert-list" id="alertList">
                 <!-- Alerts will be populated by JavaScript -->
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer>
@@ -186,6 +210,21 @@
             </div>
         </div>
     </footer>
+
+    <!-- Chart Modal -->
+    <div class="chart-modal" id="chartModal">
+        <div class="chart-modal-content">
+            <div class="chart-modal-header">
+                <h3 id="modalTitle">Grafik Detail</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chart-modal-body">
+                <canvas id="modalChart"></canvas>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript -->
     <script src="assets/js/main.js"></script>
